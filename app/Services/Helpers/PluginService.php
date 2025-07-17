@@ -145,7 +145,11 @@ class PluginService
     public function requireComposerPackages(Plugin $plugin): void
     {
         if ($plugin->composer_packages) {
-            $this->composer->requirePackages(explode(',', $plugin->composer_packages));
+            $status = $this->composer->requirePackages(explode(',', $plugin->composer_packages));
+
+            if (! $status) {
+                throw new Exception('Required packages not installed.');
+            }
         }
     }
 
